@@ -59,6 +59,39 @@
 
 <script>
 
+  window.addEventListener('keydown', function(e) {
+    // Set audio and key to be the returned keycode from whatever key you press down
+    const audio = document.querySelector(`audio[data-key='${e.keyCode}']`)
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+
+    // This just exits the function if you press a key that doesn't do anything.
+    if(!audio) return; 
+
+    // Allow spamming, by always starting the playback from the beginning of the sound
+    audio.currentTime = 0;
+
+    // uses our audio variable saved from earlier, and play the sound assigned to it
+    audio.play();
+    key.classList.add('playing');
+
+    // When we use this function, our parameter e will be key, because that is what the
+    // eventListener is attached to. e is an arbitrary name, but similar to how we name
+    // i for iteration, e is for event.
+    function removeTransition(e) {
+      // if our event (key) doesn't have the transform property, then skip it
+      if(e.propertyName !== 'transform') return;
+      // This refers to the object being used. so this will return key. so,
+      // we basically just remove .playing, which puts it back to it's unplayed state
+      this.classList.remove('playing');
+    }
+    // grab all the .key from our css template, and since we can't use eventListeners on arrays
+    // all at the same time, we will loop through the array of keys and an eventListener for each
+    // key. Then it just uses transition end, and runs our little function to remove the
+    // effect that we gave it earlier.
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  });
+
 </script>
 
 
