@@ -71,6 +71,10 @@
   </style>
 
   <script>
+
+    /* NOTE: This function has a funky thing where at the end of a minute, the clock will
+       visually snap, and looks weird when resetting to a new minute. You can fix this with
+       some if statements, but I'm kinda behind and want to move on. */
     const secondHand = document.querySelector('.second-hand');
     const minHand = document.querySelector('.min-hand');
     const hourHand = document.querySelector('.hour-hand');
@@ -96,7 +100,6 @@
 
     // Call the timing function we wrote above, and update every second.
     setInterval(setDate, 1000);
-
   </script>
 </body>
 </html>
