@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -43,6 +44,11 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -56,6 +62,27 @@
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      flex: 1 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    /* Select the top and bottom (first and last child) */
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+
+    /* Set the default position of the top and bottom text */
+    .panel.open-active > *:first-child {
+      transform: translateY(0);
+    }
+    .panel.panel.open-active > *:last-child {
+      transform: translateY(0);
     }
 
     .panel p {
@@ -71,6 +98,7 @@
 
     .panel.open {
       font-size: 40px;
+      flex: 5;
     }
 
   </style>
@@ -105,7 +133,26 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
+    
+    // Add the class .open to this
+    function toggleOpen() {
+      this.classList.toggle('open');
+    }
 
+    // Take the events from the transitionend, and if they include flex
+    // toggle the class open-active, which slides text in and out.
+    function toggleActive(e) {
+      if(e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+
+    // add and eventListener to each panel object returned from NodeList
+    // When clicked, runs toggleOpen, and this references the object where the function was run in,
+    // which is panel
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
   </script>
 
 
